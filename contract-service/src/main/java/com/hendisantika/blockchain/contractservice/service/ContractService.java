@@ -2,6 +2,7 @@ package com.hendisantika.blockchain.contractservice.service;
 
 import com.hendisantika.blockchain.contractservice.model.Contract;
 import com.hendisantika.blockchain.contractservice.model.Transactionfee;
+import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +13,12 @@ import org.web3j.crypto.WalletUtils;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.methods.request.Transaction;
-import org.web3j.protocol.core.methods.response.*;
+import org.web3j.protocol.core.methods.response.EthCoinbase;
+import org.web3j.protocol.core.methods.response.EthFilter;
+import org.web3j.protocol.core.methods.response.EthGetBalance;
+import org.web3j.protocol.core.methods.response.EthGetTransactionCount;
+import org.web3j.protocol.core.methods.response.TransactionReceipt;
 
-import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.InvalidAlgorithmParameterException;
@@ -42,9 +46,10 @@ public class ContractService {
     private static final BigInteger GAS_LIMIT = BigInteger.valueOf(500_000L);
 
     @Autowired
-    Web3j web3j;
-    Credentials credentials;
-    private List<String> contracts = new ArrayList<>();
+    private Web3j web3j;
+
+    private Credentials credentials;
+    private final List<String> contracts = new ArrayList<>();
 
     @PostConstruct
     public void init() throws IOException, CipherException, NoSuchAlgorithmException, NoSuchProviderException, InvalidAlgorithmParameterException {
